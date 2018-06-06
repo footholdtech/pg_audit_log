@@ -15,12 +15,6 @@ On a 2.93GHz i7 with postgresql 9.1 the audit log has an overhead of about 0.003
 
 == INSTALL
 
-=== Enable plpgsql langauges in your postgresql instance
-
-  As a superuser in postgres make sure your database has plpgsql enabled:
-
-  CREATE OR REPLACE PROCEDURAL LANGUAGE plpgsql;
-
 === Rails 3
 
   $ rails generate pg_audit_log:install
