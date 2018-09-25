@@ -9,6 +9,10 @@ begin
   ActiveRecord::Base.establish_connection({
     :adapter  => 'postgresql',
     :database => 'pg_audit_log_test',
+    :host => ENV.fetch('DB_HOST', nil),
+    :port => ENV.fetch('DB_PORT', nil),
+    :user => ENV.fetch('DB_USER', nil),
+    :password => ENV.fetch('DB_PASSWORD', nil),
     :min_messages => 'warning',
   })
   connection = ActiveRecord::Base.connection
