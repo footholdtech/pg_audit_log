@@ -61,6 +61,7 @@ end
 class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
 
   alias_method :execute_without_pg_audit_log, :execute
+  alias_method :exec_query_without_pg_audit_log, :exec_query
 
   def set_audit_user_id_and_name
     user_id, unique_name = user_id_and_name
