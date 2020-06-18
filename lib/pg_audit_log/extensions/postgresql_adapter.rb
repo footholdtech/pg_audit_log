@@ -59,9 +59,10 @@ end
 
 # Did not want to reopen the class but sending an include seemingly is not working.
 class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
+  alias execute_without_pg_audit_log execute
+  alias exec_query_without_pg_audit_log exec_query
 
-  alias_method :execute_without_pg_audit_log, :execute
-  alias_method :exec_query_without_pg_audit_log, :exec_query
+  prepend PGAuditExtensions
 
   def set_audit_user_id_and_name
     user_id, unique_name = user_id_and_name
@@ -93,5 +94,3 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
     [user_id, user_unique_name]
   end
 end
-
-ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(PGAuditExtensions)
