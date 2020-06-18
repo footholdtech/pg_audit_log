@@ -1,4 +1,3 @@
-# -*- encoding: utf-8 -*-
 $:.push File.expand_path('../lib', __FILE__)
 require 'pg_audit_log/version'
 
@@ -7,12 +6,12 @@ Gem::Specification.new do |spec|
   spec.version     = PgAuditLog::VERSION
   spec.authors     = ['Case Commons, LLC']
   spec.email       = ['casecommons-dev@googlegroups.com', 'andrew@johnandrewmarshall.com']
-  spec.homepage    = 'https://github.com/Casecommons/pg_audit_log'
-  spec.summary     = %q{PostgreSQL-only database-level audit logging of all databases changes.}
-  spec.description = %q{A completely transparent audit logging component for your application using a stored procedure and triggers. Comes with specs for your project and a rake task to generate the reverse SQL to undo changes logged.}
+  spec.homepage    = 'https://github.com/relevant-healthcare/pg_audit_log'
+  spec.summary     = 'PostgreSQL-only database-level audit logging of all databases changes.'
+  spec.description = 'A completely transparent audit logging component for your application using a stored procedure and triggers. Comes with specs for your project and a rake task to generate the reverse SQL to undo changes logged.'
   spec.license     = 'MIT'
 
-  spec.post_install_message = %q{Please run PgAuditLog::Function.install (in console/migration) to install the new versions of the database functions}
+  spec.post_install_message = 'Please run PgAuditLog::Function.install (in console/migration) to install the new versions of the database functions'
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

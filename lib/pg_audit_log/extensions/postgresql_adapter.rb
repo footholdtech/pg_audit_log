@@ -54,7 +54,6 @@ module PGAuditExtensions
     set_audit_user_id_and_name
     super(*args, &block)
   end
-
 end
 
 # Did not want to reopen the class but sending an include seemingly is not working.
@@ -68,8 +67,8 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
     user_id, unique_name = user_id_and_name
     return true if (@last_user_id && @last_user_id == user_id) && (@last_unique_name && @last_unique_name == unique_name)
 
-    execute_without_pg_audit_log PgAuditLog::Function::user_identifier_temporary_function(user_id)
-    execute_without_pg_audit_log PgAuditLog::Function::user_unique_name_temporary_function(unique_name)
+    execute_without_pg_audit_log PgAuditLog::Function.user_identifier_temporary_function(user_id)
+    execute_without_pg_audit_log PgAuditLog::Function.user_unique_name_temporary_function(unique_name)
     @last_user_id = user_id
     @last_unique_name = unique_name
 
@@ -77,7 +76,7 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
   end
 
   def set_user_id(user_id = nil)
-    execute_without_pg_audit_log PgAuditLog::Function::user_identifier_temporary_function(user_id || @last_user_id)
+    execute_without_pg_audit_log PgAuditLog::Function.user_identifier_temporary_function(user_id || @last_user_id)
   end
 
   def blank_audit_user_id_and_name
@@ -89,8 +88,8 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
 
   def user_id_and_name
     current_user = Thread.current[:current_user]
-    user_id = current_user.try(:id) || "-1"
-    user_unique_name = current_user.try(:unique_name) || "UNKNOWN"
+    user_id = current_user.try(:id) || '-1'
+    user_unique_name = current_user.try(:unique_name) || 'UNKNOWN'
     [user_id, user_unique_name]
   end
 end
