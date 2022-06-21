@@ -40,9 +40,11 @@ module PgAuditLog
         tables.each do |table|
           create_for_table(table) unless tables_with_triggers.include?(table)
         end
+      end
 
-        extra_tables = tables_with_triggers - tables
-        extra_tables.each do |table|
+      def uninstall_extra
+        tables_with_extra_triggers = tables_with_triggers - tables
+        tables_with_extra_triggers.each do |table|
           drop_for_table(table)
         end
       end
