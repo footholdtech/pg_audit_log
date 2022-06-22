@@ -70,10 +70,10 @@ describe PgAuditLog::Triggers do
       end
     end
 
-    describe ".uninstall_extra" do
+    describe ".uninstall_stale" do
       it 'should work' do
         expect {
-          PgAuditLog::Triggers.uninstall_extra
+          PgAuditLog::Triggers.uninstall_stale
         }.not_to raise_error
       end
     end
@@ -96,10 +96,10 @@ describe PgAuditLog::Triggers do
       end
     end
 
-    describe ".uninstall_extra" do
+    describe ".uninstall_stale" do
       it 'should work' do
         expect {
-          PgAuditLog::Triggers.uninstall_extra
+          PgAuditLog::Triggers.uninstall_stale
         }.not_to raise_error
       end
     end
