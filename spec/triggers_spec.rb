@@ -70,6 +70,13 @@ describe PgAuditLog::Triggers do
       end
     end
 
+    describe ".uninstall_stale" do
+      it 'should work' do
+        expect {
+          PgAuditLog::Triggers.uninstall_stale
+        }.not_to raise_error
+      end
+    end
   end
 
   context "when triggers are installed" do
@@ -80,10 +87,19 @@ describe PgAuditLog::Triggers do
         }.not_to raise_error
       end
     end
+
     describe ".uninstall" do
       it "should work" do
         expect{
           PgAuditLog::Triggers.uninstall
+        }.not_to raise_error
+      end
+    end
+
+    describe ".uninstall_stale" do
+      it 'should work' do
+        expect {
+          PgAuditLog::Triggers.uninstall_stale
         }.not_to raise_error
       end
     end

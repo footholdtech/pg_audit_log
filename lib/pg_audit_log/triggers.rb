@@ -42,6 +42,13 @@ module PgAuditLog
         end
       end
 
+      def uninstall_stale
+        tables_with_stale_triggers = tables_with_triggers - tables
+        tables_with_stale_triggers.each do |table|
+          drop_for_table(table)
+        end
+      end
+
       def uninstall
         tables_with_triggers.each do |table|
           drop_for_table(table) if tables_with_triggers.include?(table)
