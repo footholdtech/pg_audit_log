@@ -40,9 +40,9 @@ module PGAuditExtensions
     super(sql, name = nil)
   end
 
-  def exec_query(*args, &block)
+  def exec_query(*args, **kwargs, &block)
     set_audit_user_id_and_name
-    super(*args, &block)
+    super(*args, **kwargs, &block)
   end
 
   def exec_update(*args, &block)

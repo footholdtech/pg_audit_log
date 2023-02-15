@@ -165,7 +165,7 @@ describe PgAuditLog do
         end
 
         context "when going from a value to a another value" do
-          before { @model.update_attributes!(:str => 'bar') }
+          before { @model.update!(:str => 'bar') }
           subject { PgAuditLog::Entry.where(:field_name => 'str').last }
 
           describe '#operation' do
@@ -186,7 +186,7 @@ describe PgAuditLog do
 
         context "when going from nil to a value" do
           let(:attributes) { {:txt => nil} }
-          before { @model.update_attributes!(:txt => 'baz') }
+          before { @model.update!(:txt => 'baz') }
           subject { PgAuditLog::Entry.where(:field_name => 'txt').last }
 
           describe '#field_value_new' do
@@ -201,7 +201,7 @@ describe PgAuditLog do
         end
 
         context "when going from a value to nil" do
-          before { @model.update_attributes!(:str => nil) }
+          before { @model.update!(:str => nil) }
           subject { PgAuditLog::Entry.where(:field_name => 'str').last }
 
           describe '#field_value_new' do
@@ -216,7 +216,7 @@ describe PgAuditLog do
         end
 
         context "when the value does not change" do
-          before { @model.update_attributes!(:str => 'foo') }
+          before { @model.update!(:str => 'foo') }
           subject { PgAuditLog::Entry.where(:field_name => 'str', :operation => 'UPDATE').last }
 
           it { is_expected.not_to be }
@@ -224,7 +224,7 @@ describe PgAuditLog do
 
         context "when the value is nil and does not change" do
           let(:attributes) { {:txt => nil} }
-          before { @model.update_attributes!(:txt => nil) }
+          before { @model.update!(:txt => nil) }
           subject { PgAuditLog::Entry.where(:field_name => 'txt', :operation => 'UPDATE').last }
 
           it { is_expected.not_to be }
@@ -232,7 +232,7 @@ describe PgAuditLog do
 
         context "when the value is a boolean" do
           context "going from nil -> true" do
-            before { @model.update_attributes!(:bool => true) }
+            before { @model.update!(:bool => true) }
             subject { PgAuditLog::Entry.where(:field_name => 'bool', :operation => 'UPDATE').last }
 
             describe '#field_value_new' do
@@ -249,7 +249,7 @@ describe PgAuditLog do
           context "going from false -> true" do
             let(:attributes) { {:bool => false} }
             before do
-              @model.update_attributes!(:bool => true)
+              @model.update!(:bool => true)
             end
             subject { PgAuditLog::Entry.where(:field_name => 'bool', :operation => 'UPDATE').last }
 
@@ -268,7 +268,7 @@ describe PgAuditLog do
             let(:attributes) { {:bool => true} }
 
             before do
-              @model.update_attributes!(:bool => false)
+              @model.update!(:bool => false)
             end
             subject { PgAuditLog::Entry.where(:field_name => 'bool', :operation => 'UPDATE').last }
 
