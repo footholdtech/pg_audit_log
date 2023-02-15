@@ -45,14 +45,14 @@ module PGAuditExtensions
     super(*args, **kwargs, &block)
   end
 
-  def exec_update(*args, **kwargs, &block)
+  def exec_update(*args, &block)
     set_audit_user_id_and_name
-    super(*args, **kwargs, &block)
+    super(*args, &block)
   end
 
-  def exec_delete(*args, **kwargs, &block)
+  def exec_delete(*args, &block)
     set_audit_user_id_and_name
-    super(*args, **kwargs, &block)
+    super(*args, &block)
   end
 end
 
