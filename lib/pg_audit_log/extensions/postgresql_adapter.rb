@@ -1,15 +1,15 @@
 require 'active_record/connection_adapters/postgresql_adapter'
 
 module PGAuditExtensions
-  def drop_table(table_name)
+  def drop_table(table_name, **options)
     if PgAuditLog::Triggers.tables_with_triggers.include?(table_name)
       PgAuditLog::Triggers.drop_for_table(table_name)
     end
-    super(table_name)
+    super(table_name, **options)
   end
 
-  def create_table(table_name, options = {}, &block)
-    super(table_name, options, &block)
+  def create_table(table_name, **options, &block)
+    super(table_name, **options, &block)
     unless options[:temporary] ||
       PgAuditLog::IGNORED_TABLES.include?(table_name) ||
       PgAuditLog::IGNORED_TABLES.any? { |table| table =~ table_name if table.is_a? Regexp } ||
