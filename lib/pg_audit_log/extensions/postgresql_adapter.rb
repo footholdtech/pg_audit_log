@@ -1,6 +1,29 @@
 require 'active_record/connection_adapters/postgresql_adapter'
 
 module PGAuditExtensions
+  def self.included(instrumented_class)
+    instrumented_class.class_eval do
+      if instrumented_class.method_defined?(:execute)
+        alias_method :execute_without_pg_audit_log, :execute
+        alias_method :execute, :execute_with_pg_audit_log
+      end
+
+      if instrumented_class.method_defined?(:exec_query)
+        alias_method :exec_query_without_pg_audit_log, :exec_query
+        alias_method :execute, :exec_query_with_pg_audit_log
+      end
+
+      if instrumented_class.method_defined?(:exec_delete)
+        alias_method :exec_delete_without_pg_audit_log, :exec_delete
+        alias_method :exec_delete, :exec_delete_with_pg_audit_log
+      end
+      if instrumented_class.method_defined?(:exec_update)
+        alias_method :exec_update_without_pg_audit_log, :exec_update
+        alias_method :exec_update, :exec_update_with_pg_audit_log
+      end
+    end
+  end
+
   def drop_table(table_name, **options)
     if PgAuditLog::Triggers.tables_with_triggers.include?(table_name)
       PgAuditLog::Triggers.drop_for_table(table_name)
@@ -35,31 +58,25 @@ module PGAuditExtensions
     @last_user_id = @last_unique_name = nil
   end
 
-  def execute(sql, name = nil)
+  def execute_with_pg_audit_log(sql, name = nil)
     set_audit_user_id_and_name
-    super(sql, name = nil)
+    execute_without_pg_audit_log(sql, name = nil)
   end
 
-  def exec_query(*args, **kwargs, &block)
+  def exec_query_with_pg_audit_log(*args, **kwargs, &block)
     set_audit_user_id_and_name
-    super(*args, **kwargs, &block)
+    exec_query_without_pg_audit_log(*args, **kwargs, &block)
   end
 
-  def exec_update(*args, &block)
+  def exec_update_with_pg_audit_log(*args, &block)
     set_audit_user_id_and_name
-    super(*args, &block)
+    exec_update_without_pg_audit_log(*args, &block)
   end
 
-  def exec_delete(*args, &block)
+  def exec_delete_with_pg_audit_log(*args, &block)
     set_audit_user_id_and_name
-    super(*args, &block)
+    exec_delete_without_pg_audit_log(*args, &block)
   end
-end
-
-# Did not want to reopen the class but sending an include seemingly is not working.
-class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
-  alias_method :execute_without_pg_audit_log, :execute
-  alias_method :exec_query_without_pg_audit_log, :exec_query
 
   def set_audit_user_id_and_name
     # If query is made to a replica, then we can't make any write requests, so we should skip
@@ -95,4 +112,6 @@ class ActiveRecord::ConnectionAdapters::PostgreSQLAdapter
   end
 end
 
-ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.prepend(PGAuditExtensions)
+ActiveRecord::ConnectionAdapters::PostgreSQLAdapter.module_eval do
+  include PGAuditExtensions
+end
