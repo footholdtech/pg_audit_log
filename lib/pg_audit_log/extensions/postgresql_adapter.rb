@@ -10,7 +10,7 @@ module PGAuditExtensions
 
       if instrumented_class.method_defined?(:exec_query)
         alias_method :exec_query_without_pg_audit_log, :exec_query
-        alias_method :execute, :exec_query_with_pg_audit_log
+        alias_method :exec_query, :exec_query_with_pg_audit_log
       end
 
       if instrumented_class.method_defined?(:exec_delete)
