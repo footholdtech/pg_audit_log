@@ -1,6 +1,7 @@
 require 'bundler'
 Bundler.setup
 
+require 'debug'
 require 'pg_audit_log'
 require 'with_model'
 
