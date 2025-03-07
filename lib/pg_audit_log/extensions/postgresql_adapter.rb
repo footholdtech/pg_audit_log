@@ -30,7 +30,7 @@ module PGAuditExtensions
     end
   end
 
-  def reconnect!
+  def reconnect
     super
     @last_user_id = @last_unique_name = nil
   end
