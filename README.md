@@ -1,6 +1,26 @@
 # pg_audit_log
 
-NOTE: this repo is a fork of https://github.com/dylanz/pg_audit_log. The original Gem was on Github at casecommons/pg_audit_log, but it has since been taken down. This fork has been maintained only to the extent that it has been updated to be compatible with Rails <5.3.
+NOTE: this repo is a fork of https://github.com/dylanz/pg_audit_log. The original Gem was on Github at casecommons/pg_audit_log, but it has since been taken down. This fork has been maintained only to the extent that it has been updated to be compatible for Rails 7.0 - 8.0.
+
+## Development
+
+Specify a Rails version and run `bundle install`:
+
+```console
+$ RAILS_VERSION=7.1.5.1 bundle install
+```
+
+Setup the test database, if you haven't already:
+
+```console
+$ createdb pg_audit_log_test
+```
+
+Run specs:
+
+```console
+$ bundle exec rake
+```
 
 ## Description
 
