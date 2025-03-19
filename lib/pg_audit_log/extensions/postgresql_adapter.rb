@@ -31,7 +31,7 @@ module PGAuditExtensions
   end
 
   def reconnect!(*args, **kwargs, &block)
-    super
+    super(*args, **kwargs, &block)
     @last_user_id = @last_unique_name = nil
   end
 
