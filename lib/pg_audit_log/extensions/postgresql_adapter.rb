@@ -45,6 +45,11 @@ module PGAuditExtensions
     super(*args, **kwargs, &block)
   end
 
+  def internal_exec_query(*args, **kwargs, &block)
+    set_audit_user_id_and_name
+    super(*args, **kwargs, &block)
+  end
+
   def exec_update(*args, &block)
     set_audit_user_id_and_name
     super(*args, &block)
