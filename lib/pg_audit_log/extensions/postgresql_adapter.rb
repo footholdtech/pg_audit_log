@@ -50,6 +50,11 @@ module PGAuditExtensions
     super
   end
 
+  def exec_insert_all(...)
+    set_audit_user_id_and_name
+    super
+  end
+
   def exec_update(...)
     set_audit_user_id_and_name
     super
