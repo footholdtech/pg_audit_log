@@ -4,22 +4,30 @@ NOTE: this repo is a fork of https://github.com/dylanz/pg_audit_log. The origina
 
 ## Development
 
-Specify a Rails version and run `bundle install`:
-
-```console
-$ RAILS_VERSION=7.1.5.1 bundle install
-```
-
 Setup the test database, if you haven't already:
 
 ```console
 $ createdb pg_audit_log_test
 ```
 
-Run specs:
+We use the [appraisal](https://github.com/thoughtbot/appraisal) gem to ensure compatibility with multiple Rails versions during upgrades. If you need to ensure support for a new Rails version, add it to the `Appraisals` file.
+
+Install all gems from the `Appraisals` file:
 
 ```console
-$ bundle exec rake
+$ bundle exec appraisal install
+```
+
+Run specs across all versions in the `Appraisals` file:
+
+```console
+$ bundle exec appraisal rake
+```
+
+Or run specs for a single version:
+
+```console
+$ bundle exec appraisal rails-7-0 rake
 ```
 
 ## Description
