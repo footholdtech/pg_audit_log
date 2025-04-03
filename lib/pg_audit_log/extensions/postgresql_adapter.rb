@@ -30,29 +30,44 @@ module PGAuditExtensions
     end
   end
 
-  def reconnect!
+  def reconnect!(...)
     super
     @last_user_id = @last_unique_name = nil
   end
 
-  def execute(sql, name = nil)
+  def execute(...)
     set_audit_user_id_and_name
-    super(sql, name = nil)
+    super
   end
 
-  def exec_query(*args, **kwargs, &block)
+  def internal_exec_query(...)
     set_audit_user_id_and_name
-    super(*args, **kwargs, &block)
+    super
   end
 
-  def exec_update(*args, &block)
+  def exec_query(...)
     set_audit_user_id_and_name
-    super(*args, &block)
+    super
   end
 
-  def exec_delete(*args, &block)
+  def exec_insert(...)
     set_audit_user_id_and_name
-    super(*args, &block)
+    super
+  end
+
+  def exec_insert_all(...)
+    set_audit_user_id_and_name
+    super
+  end
+
+  def exec_update(...)
+    set_audit_user_id_and_name
+    super
+  end
+
+  def exec_delete(...)
+    set_audit_user_id_and_name
+    super
   end
 end
 

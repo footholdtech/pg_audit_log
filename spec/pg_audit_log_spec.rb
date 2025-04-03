@@ -70,6 +70,26 @@ describe PgAuditLog do
           end
         end
 
+        context "when using insert_all" do
+          subject { PgAuditLog::Entry.where(:field_name => 'str').all }
+
+          before do
+            Thread.current[:current_user] = double('User', :id => 1, :unique_name => 'my current user')
+            AuditedModel.insert_all!([attributes, attributes])
+          end
+
+          it 'creates audits for each inserted record' do
+            expect(subject.count).to eq(2)
+
+            subject.each do |entry|
+              expect(entry.occurred_at).to be
+              expect(entry.table_name).to eq(AuditedModel.table_name)
+              expect(entry.user_id).to eq(1)
+              expect(entry.user_unique_name).to eq('my current user')
+            end
+          end
+        end
+
         context "when a user is present, having just been changed" do
           before do
             record = AuditedModel.new
