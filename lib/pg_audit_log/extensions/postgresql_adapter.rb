@@ -40,6 +40,11 @@ module PGAuditExtensions
     super
   end
 
+  def internal_exec_query(...)
+    set_audit_user_id_and_name
+    super
+  end
+
   def exec_query(...)
     set_audit_user_id_and_name
     super
