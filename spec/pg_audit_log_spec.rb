@@ -448,7 +448,7 @@ describe PgAuditLog do
         it "should automatically drop and create the trigger" do
           new_table_name = "new_table_#{Time.current.to_i}"
           connection.create_table('test_table')
-          connection.rename_table(:test_table, new_table_name)
+          connection.rename_table(:test_table, new_table_name.to_sym)
 
           expect(trigger_names).not_to include('audit_test_table')
           expect(trigger_names).to include("audit_#{new_table_name}")
