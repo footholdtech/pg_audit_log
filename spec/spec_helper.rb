@@ -35,7 +35,7 @@ RSpec.configure do |config|
   config.before(:each) do
     PgAuditLog::Entry.uninstall rescue nil
     connection.tables.each do |table|
-      connection.drop_table_without_auditing(table)
+      connection.execute("DROP TABLE #{table}")
     end
     PgAuditLog::Triggers.uninstall rescue nil
     PgAuditLog::Entry.uninstall

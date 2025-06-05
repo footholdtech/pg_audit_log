@@ -440,7 +440,19 @@ describe PgAuditLog do
           expect(trigger_names).not_to include('audit_ignored_table')
           expect(trigger_names).not_to include("audit_#{new_table_name}")
           expect(PgAuditLog::Triggers.tables_with_triggers).not_to include(new_table_name)
+          connection.drop_table(new_table_name) rescue nil
+        end
+      end
 
+      context 'when symbols are passed in as table names' do
+        it "should automatically drop and create the trigger" do
+          new_table_name = "new_table_#{Time.current.to_i}"
+          connection.create_table('test_table')
+          connection.rename_table(:test_table, new_table_name.to_sym)
+
+          expect(trigger_names).not_to include('audit_test_table')
+          expect(trigger_names).to include("audit_#{new_table_name}")
+          expect(PgAuditLog::Triggers.tables_with_triggers).to include(new_table_name)
           connection.drop_table(new_table_name) rescue nil
         end
       end

@@ -19,6 +19,9 @@ module PGAuditExtensions
   end
 
   def rename_table(table_name, new_name)
+    table_name = table_name.to_s
+    new_name = new_name.to_s
+
     if PgAuditLog::Triggers.tables_with_triggers.include?(table_name)
       PgAuditLog::Triggers.drop_for_table(table_name)
     end
