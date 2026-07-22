@@ -84,3 +84,34 @@ On a 2.93GHz i7 with PostgreSQL 9.1 the audit log has an overhead of about 0.003
 ## LICENSE
 
 Copyright © 2010–2014 Case Commons, LLC. Licensed under the MIT license, available in the “LICENSE” file.
+
+# FCM Annotations
+
+> Added during the Rails 8 upgrade (FCM-8671). Everything above is the upstream README,
+> kept as-is; the notes below reflect how we develop and test this fork locally.
+
+## Local test database & specs
+
+### Requirements
+
+- **PostgreSQL** — a running server is required (currently validated against 17.4). Install it via Homebrew (`brew install postgresql@17`) or another tool, and start it before setting up the database.
+- **Ruby** — developed against 3.3.11.
+
+### Set up the test database
+
+Rake tasks are provided so you don't have to run raw SQL:
+
+```console
+$ bundle install
+$ bundle exec rake db:setup      # create pg_audit_log_test + install the audit_log schema
+```
+
+Lower-level tasks are also available: `db:create`, `db:migrate`, `db:drop`, `db:reset`. This gem has no versioned migrations — its schema is the `audit_log` table plus the audit functions — so `db:migrate` just installs those, and there is no rollback task. The connection reads the same environment variables that upstream `spec/spec_helper.rb` already uses — `DB_HOST`, `DB_PORT`, `DB_USER`, `DB_PASSWORD` (all optional; anything unset falls back to the local socket and your OS user). The database name is `pg_audit_log_test`, hardcoded in `spec_helper.rb`. Because the task and the specs read the same variables, a single `DB_USER=… DB_PASSWORD=…` applies to both. (`createdb pg_audit_log_test` also works — the suite installs the schema itself on each run.)
+
+### Run the specs
+
+```console
+$ bundle exec rspec
+```
+
+No fixtures or seed data are needed (or shipped): the suite uses [`with_model`](https://github.com/Casecommons/with_model) to define throwaway tables per example and reinstalls the audit schema on each run.
